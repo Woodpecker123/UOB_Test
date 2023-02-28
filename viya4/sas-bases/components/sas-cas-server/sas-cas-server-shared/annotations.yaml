@@ -1,0 +1,12 @@
+# WARNING: Do not attempt to use this kustomization file in your deployment.
+# WARNING: Kustomize Component support in CAS is being evaluated for a future release of SAS Viya.
+apiVersion: builtin
+kind: AnnotationsTransformer
+metadata:
+  name: annotations-transformer
+annotations:
+  sas.com/component-name: sas-cas-operator
+  sas.com/kustomize-components: true
+fieldSpecs:
+- path: metadata/annotations
+  create: true

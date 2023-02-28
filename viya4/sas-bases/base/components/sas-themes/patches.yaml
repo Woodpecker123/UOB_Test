@@ -1,0 +1,393 @@
+
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-bf1126c4f8ed25b9
+patch: |-
+  - op: add
+    path: /spec/selector/matchExpressions
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-4cf4042f5ad2932a
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0/ports
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-97b6d8049876b5d9
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0/envFrom
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-0feb0a7c731f6bb5
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0/env
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-74d132e221ba9c43
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0/volumeDevices
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-e9bf3e2a1316ec5a
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0/securityContext/capabilities/add
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-a81f73d2327847f8
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/1/command
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-ad9f074d2b758d5a
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/1/args
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-8b442f3c089acd31
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/1/ports
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-e5b28b2254433f08
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/1/volumeDevices
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2409793d0e52cc67
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/1/securityContext/capabilities/add
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-0e51036922114c8d
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/command
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-b694bcb2d97c5ebd
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/args
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-a0a4815f5d34b239
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/volumeDevices
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-f6a3c84d0418e327
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/livenessProbe/httpGet/httpHeaders
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-d15f1d9010a81be8
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/readinessProbe/httpGet/httpHeaders
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-0fb4dfeff160acfb
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/startupProbe/httpGet/httpHeaders
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-70e404c8c531febc
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/securityContext/capabilities/add
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-f972eafb00fcb2d4
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/supplementalGroups
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-367fbde5e7ba1259
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/sysctls
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-26cbfc4e86a7914f
+patch: |-
+  - op: add
+    path: /spec/template/spec/imagePullSecrets
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-48f0c6c107695f14
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchFields
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-6a1176047f03adc3
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/preference/matchFields
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-008e3a88a899e6aa
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/1/preference/matchFields
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-02ccc187ba543bec
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/podAntiAffinity/requiredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-6cb716b332e5ce48
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/podAntiAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/podAffinityTerm/namespaces
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-88a1905c06cbbe42
+patch: |-
+  - op: add
+    path: /spec/template/spec/hostAliases
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-b7b30cd39ac75fbc
+patch: |-
+  - op: add
+    path: /spec/template/spec/readinessGates
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-themes
+  version: v1

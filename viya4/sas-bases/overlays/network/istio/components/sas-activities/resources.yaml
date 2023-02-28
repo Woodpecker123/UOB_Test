@@ -1,0 +1,41 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-activities
+spec:
+  host: sas-activities
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /activities/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-activities
+    sas.com/admin: namespace
+  name: sas-activities
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /activities
+    - uri:
+        prefix: /activities/
+    route:
+    - destination:
+        host: sas-activities
+    timeout: 300s
+

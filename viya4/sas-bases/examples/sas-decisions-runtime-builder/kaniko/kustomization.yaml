@@ -1,0 +1,5 @@
+resources:
+- storage.yaml
+- prepJobtemplate.yaml
+- updateJobtemplate.yaml
+- sa.yaml

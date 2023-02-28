@@ -1,0 +1,27 @@
+apiVersion: orchestration.sas.com/v2beta4
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-rabbitmq-server
+    sas.com/component-version: 3.1009001.4-20221216.1671199842998
+  creationTimestamp: null
+  name: deploy-assess-rabbitmq
+spec:
+  args:
+  - name: namespace
+  - name: manifest
+  steps:
+  - args:
+    - deploy-assess-rabbitmq-execute
+    - --namespace
+    - $namespace
+    cmd: run
+    when: |-
+      (and
+        (.ManifestResource $manifest (((((.NewManifestResourcesIterationSpec).WithGroup "apps").WithVersion "v1").WithKind "StatefulSet").WithName "sas-rabbitmq-server"))
+        (.ClusterResource ((((((.NewClusterResourcesIterationSpec).WithNamespace $namespace).WithGroup "apps").WithVersion "v1").WithResource "statefulset").WithName "sas-rabbitmq-server"))
+        (ne
+          (.Annotation "sas.com/component-version" (.ManifestResource $manifest (((((.NewManifestResourcesIterationSpec).WithGroup "apps").WithVersion "v1").WithKind "StatefulSet").WithName "sas-rabbitmq-server")))
+          (.Annotation "sas.com/component-version" (.ClusterResource ((((((.NewClusterResourcesIterationSpec).WithNamespace $namespace).WithGroup "apps").WithVersion "v1").WithResource "statefulset").WithName "sas-rabbitmq-server")))
+        )
+      )

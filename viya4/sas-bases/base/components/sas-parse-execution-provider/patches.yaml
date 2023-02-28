@@ -1,0 +1,267 @@
+
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-9874acfe41a9c289
+patch: |-
+  - op: add
+    path: /spec/selector/matchExpressions
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-3abb80a5f8af596e
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-52be738035b0d955
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/command
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-560b1bde4fe5ee05
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/args
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-b038b2baf100e309
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/volumeDevices
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-404243e969117b6f
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/livenessProbe/httpGet/httpHeaders
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-486758ca15fe6d3c
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/readinessProbe/httpGet/httpHeaders
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-0e999eba8e78873b
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/startupProbe/httpGet/httpHeaders
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-ab84fa7fe37533b8
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/securityContext/capabilities/add
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-6fdceb5466698d30
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/supplementalGroups
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-0a6d2719b73e3329
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/sysctls
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-31f00f27a79dedd7
+patch: |-
+  - op: add
+    path: /spec/template/spec/imagePullSecrets
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-b4fd1bcad02e3b70
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchFields
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-6681c18d1faf0be3
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/preference/matchFields
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-49b2cfd9f9890f4e
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/1/preference/matchFields
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-79d76f0fbfd0bbe8
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/podAntiAffinity/requiredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-08c9ab1191f03d1c
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/podAntiAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/podAffinityTerm/namespaces
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-579bf3684d4fbe06
+patch: |-
+  - op: add
+    path: /spec/template/spec/hostAliases
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-d8f34154fd1efcb8
+patch: |-
+  - op: add
+    path: /spec/template/spec/readinessGates
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-parse-execution-provider
+  version: v1

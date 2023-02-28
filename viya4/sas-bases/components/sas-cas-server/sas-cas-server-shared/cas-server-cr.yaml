@@ -1,0 +1,134 @@
+# WARNING: Do not attempt to use this kustomization file in your deployment.
+# WARNING: Kustomize Component support in CAS is being evaluated for a future release of SAS Viya.
+---
+apiVersion: viya.sas.com/v1alpha1
+kind: CASDeployment
+metadata:
+  annotations:
+    sas.com/sas-access-config: "true"
+    sas.com/sas-kerberos-config: "true"
+    sas.com/config-init-mode: "initcontainer"
+  labels:
+    app: sas-cas-operator
+    app.kubernetes.io/name: "cas"
+    app.kubernetes.io/managed-by: sas-cas-operator
+    sas.com/admin: "namespace"
+    workload.sas.com/class: cas
+  name: "sas-cas"
+spec:
+  controllerTemplate:
+    spec:
+      tolerations:
+      - key: "workload.sas.com/class"
+        operator: "Equal"
+        value: "cas"
+        effect: "NoSchedule"
+      initContainers: []
+      containers:
+      - name: cas
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /internal/state
+            port: 8777
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        env:
+        - name: SAS_LICENSE
+          valueFrom:
+            secretKeyRef:
+              key: SAS_LICENSE
+              name: sas-cas-license
+        - name: CONSUL_HTTP_ADDR
+          value: http://localhost:8500
+        envFrom:
+        - configMapRef:
+            name: sas-shared-config
+        - configMapRef:
+            name: sas-java-config
+        - configMapRef:
+            name: sas-access-config
+        - configMapRef:
+            name: sas-cas-config
+        - configMapRef:
+            name: sas-deployment-metadata
+        - secretRef:
+            name: sas-consul-client
+        image: sas-cas-server
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: 2Gi
+            cpu: 250m
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+        volumeMounts:
+        - name: cas-permstore-volume
+          mountPath: /cas/permstore
+        - name: cas-data-volume
+          mountPath: /cas/data
+        - name: cas-cache-volume
+          mountPath: /cas/cache
+        - name: cas-config-volume
+          mountPath: /cas/config
+        - name: cas-tmp-volume
+          mountPath: /tmp
+          subPath: tmp
+        - name: cas-license-volume
+          mountPath: /cas/license
+        - name: podinfo
+          mountPath: /etc/podinfo
+      imagePullSecrets:
+      - name: sas-image-pull-secrets
+      serviceAccountName: sas-cas-server
+      volumes:
+      - name: podinfo
+        downwardAPI:
+          items:
+            - path: "labels"
+              fieldRef:
+                fieldPath: metadata.labels
+      - name: cas-permstore-volume
+        persistentVolumeClaim:
+          claimName: sas-cas-permstore
+      - name: cas-data-volume
+        persistentVolumeClaim:
+          claimName: sas-cas-data
+      - name: cas-cache-volume
+        emptyDir: {}
+      - name: cas-config-volume
+        emptyDir: {}
+      - name: cas-tmp-volume
+        emptyDir: {}
+      - name: cas-license-volume
+        secret:
+          secretName: sas-cas-license
+          items:
+          - key: SAS_LICENSE
+            path: license.sas
+  workers: 0
+  backupControllers: 0
+  workerTemplate: {}
+  publishHTTPIngress: true
+  routeTemplate:
+    spec:
+      host: $(INGRESS_HOST)
+    metadata:
+      annotations: {}
+      labels: {}
+  ingressTemplate:
+    spec:
+      rules:
+      - host: $(INGRESS_HOST)
+    metadata:
+      annotations:
+        nginx.ingress.kubernetes.io/proxy-body-size: 2048m
+        nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+        nginx.ingress.kubernetes.io/proxy-buffer-size: "16k"
+      labels: {}
+  appendCASAllowlistPaths: []

@@ -1,0 +1,10 @@
+resources:
+- opendistro
+- exporter.yaml
+- client-config.yaml
+- cluster-crd.yaml
+- service-account.yaml
+
+transformers:
+- annotations.yaml
+- add-image-secrets.yaml

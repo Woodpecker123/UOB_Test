@@ -1,0 +1,37 @@
+apiVersion: orchestration.sas.com/v3beta3
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-pyconfig
+    sas.com/component-version: 1.10.1-20221216.1671199363887
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: sas-pyconfig
+  name: pyconfig-runonce-execute
+spec:
+  args:
+  - name: namespace
+    require: true
+  - default: 1800s
+    name: timeout
+  source: |-
+    package main
+    import (
+      "fmt"
+      //"time"
+      //"strconv"
+      "sas/orchestration/lifecycle"
+    )
+    func main() {
+      namespace := lifecycle.Arg("namespace")
+      timeout := lifecycle.Arg("timeout")
+      //now := time.Now()
+      //epochT := now.Unix()
+      //epochStamp := strconv.FormatInt(epochT, 10)
+      jobName := "sas-pyconfig-cjinitial"
+      _, createErr := lifecycle.KubectlWithRetry(3, 3, "create", "job", "--namespace",
+                        namespace, "--from", "cronjob/sas-pyconfig", jobName)
+      if createErr != nil {
+              lifecycle.Log(fmt.Sprintf("Failed to create job: %s Error: %v", jobName, createErr))
+      }
+    }

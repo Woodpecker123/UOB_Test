@@ -1,0 +1,133 @@
+apiVersion: orchestration.sas.com/v2beta13
+kind: LifecycleOperation
+metadata:
+  annotations:
+    lifecycle.orchestration.sas.com/publish: "true"
+    sas.com/component-name: sas-k8s-common
+    sas.com/component-version: 2.60.2-20221212.1670880199432
+  creationTimestamp: null
+  name: deploy
+spec:
+  args:
+  - name: namespace
+    required: true
+  - name: manifest
+  - name: clusterApiManifest
+  - default: 7200s
+    name: timeout
+  - name: deploymentDir
+  - name: serviceAccountName
+  - name: clusterApiNamespace
+  steps:
+  - args:
+    - $namespace
+    cmd: start_leading
+  - args:
+    - delete
+    - --namespace
+    - $namespace
+    - --wait
+    - --timeout
+    - $timeout
+    - --ignore-not-found
+    - configmap
+    - sas-deploy-lifecycle-operation-variables
+    cmd: kubectl
+  - args:
+    - create
+    - --namespace
+    - $namespace
+    - configmap
+    - sas-deploy-lifecycle-operation-variables
+    cmd: kubectl
+  - args:
+    - deploy-assess
+    - --namespace
+    - $namespace
+    - --deploymentDir
+    - $deploymentDir
+    - --timeout
+    - $timeout
+    - --serviceAccountName
+    - $serviceAccountName
+    - --manifest
+    - $manifest
+    cmd: run
+  - args:
+    - cluster-api
+    - --timeout
+    - $timeout
+    - --clusterApiManifest
+    - $clusterApiManifest
+    - --clusterApiNamespace
+    - $clusterApiNamespace
+    cmd: run
+    when: $clusterApiManifest
+  - args:
+    - deploy-stage
+    - --namespace
+    - $namespace
+    - --deploymentDir
+    - $deploymentDir
+    - --timeout
+    - $timeout
+    - --serviceAccountName
+    - $serviceAccountName
+    - --manifest
+    - $manifest
+    cmd: run
+  - args:
+    - deploy-pre
+    - --namespace
+    - $namespace
+    - --deploymentDir
+    - $deploymentDir
+    - --timeout
+    - $timeout
+    - --serviceAccountName
+    - $serviceAccountName
+    - --manifest
+    - $manifest
+    cmd: run
+  - args:
+    - deploy-execute
+    - --namespace
+    - $namespace
+    - --deploymentDir
+    - $deploymentDir
+    - --timeout
+    - $timeout
+    - --serviceAccountName
+    - $serviceAccountName
+    - --manifest
+    - $manifest
+    cmd: run
+  - args:
+    - deploy-post
+    - --namespace
+    - $namespace
+    - --deploymentDir
+    - $deploymentDir
+    - --timeout
+    - $timeout
+    - --serviceAccountName
+    - $serviceAccountName
+    - --manifest
+    - $manifest
+    cmd: run
+  - always: true
+    args:
+    - delete
+    - --namespace
+    - $namespace
+    - --wait
+    - --timeout
+    - $timeout
+    - --ignore-not-found
+    - configmap
+    - sas-deploy-lifecycle-operation-variables
+    cmd: kubectl
+  - always: true
+    args:
+    - $namespace
+    cmd: stop_leading

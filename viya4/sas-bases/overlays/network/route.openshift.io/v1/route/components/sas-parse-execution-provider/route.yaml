@@ -1,0 +1,46 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-parseExecutionProvider
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-parse-execution-provider
+    sas.com/admin: namespace
+  name: sas-parse-execution-provider
+spec:
+  host: $(INGRESS_HOST)
+  path: /parseExecutionProvider
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-parse-execution-provider
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-parseExecutionProvider
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-parse-execution-provider
+    sas.com/admin: namespace
+  name: sas-parse-execution-provider-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /parseExecutionProvider
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-parse-execution-provider
+  wildcardPolicy: Subdomain
+

@@ -1,0 +1,25 @@
+apiVersion: orchestration.sas.com/v2beta4
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-certframe
+    sas.com/component-version: 3.34.3-20221216.1671190691502
+  creationTimestamp: null
+  name: deploy-pre-certframe-execute
+spec:
+  args:
+  - name: namespace
+  - name: timeout
+  steps:
+  - args:
+    - delete
+    - --namespace
+    - $namespace
+    - --wait
+    - --timeout
+    - $timeout
+    - --ignore-not-found
+    - job
+    - sas-create-openssl-ingress-certificate
+    - sas-create-openssl-ingres-certificate
+    cmd: kubectl

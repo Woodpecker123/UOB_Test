@@ -1,0 +1,45 @@
+# This is an example transformer to customize PostgreSQL configuration.
+#   - Replace {{ TRANSFORMER-NAME }} with a unique name.
+#   - Replace {{ CLUSTER-NAME }} with the name of the PostgresCluster resource you are targeting:
+#       - For Platform PostgreSQL, use "sas-crunchy-platform-postgres"
+#       - For CDS PostgreSQL, use "sas-crunchy-cds-postgres"
+#       - For both clusters, use ".*"
+# See the README file ($deploy/$deploy/sas-bases/examples/crunchydata/tuning/README.md) for more information.
+
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: {{ TRANSFORMER-NAME }}-tuning-transformer
+patch: |-
+  - op: replace
+    path: /spec/patroni/dynamicConfiguration
+    value:
+      # Overrides for Patroni's defaults
+      #loop_wait: {{ VALUE }}
+
+      postgresql:
+        use_pg_rewind: true
+
+        # Uncomment when using Front-Door TLS (or not using TLS).
+        #pg_hba:
+        #  - "hostnossl all all all md5"
+
+        # Overrides for PostgreSQL's defaults
+        parameters:
+          log_truncate_on_rotation: true
+          logging_collector: true
+          maintenance_work_mem: 128MB
+          max_connections: 1280
+          max_prepared_transactions: 1280
+          max_wal_senders: 6
+          max_wal_size: 6GB
+          shared_buffers: 1GB
+          wal_buffers: 16MB
+          wal_level: minimal
+          wal_log_hints: true
+          work_mem: 16MB
+target:
+  group: postgres-operator.crunchydata.com
+  kind: PostgresCluster
+  version: v1beta1
+  name: {{ CLUSTER-NAME }}

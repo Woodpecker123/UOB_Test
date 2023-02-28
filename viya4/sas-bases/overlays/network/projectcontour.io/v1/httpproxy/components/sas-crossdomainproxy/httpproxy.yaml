@@ -1,0 +1,34 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-crossdomainproxy
+    sas.com/admin: namespace
+  name: sas-crossdomainproxy
+spec:
+  routes:
+  - conditions:
+    - prefix: /crossdomainproxy
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /crossdomainproxy/
+    services:
+    - name: sas-crossdomainproxy
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /crossdomainproxy/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-crossdomainproxy
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

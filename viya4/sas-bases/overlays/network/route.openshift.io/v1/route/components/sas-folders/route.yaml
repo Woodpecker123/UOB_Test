@@ -1,0 +1,46 @@
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-folders
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-folders
+    sas.com/admin: namespace
+  name: sas-folders
+spec:
+  host: $(INGRESS_HOST)
+  path: /folders
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-folders
+  wildcardPolicy: None
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 300s
+    router.openshift.io/cookie-same-site: Lax
+    router.openshift.io/cookie_name: sas-ocp-folders
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-folders
+    sas.com/admin: namespace
+  name: sas-folders-multitenant
+spec:
+  host: wildcard.$(INGRESS_HOST)
+  path: /folders
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: sas-folders
+  wildcardPolicy: Subdomain
+

@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sas-opendistro-client-config
+data:
+  SAS_URL_ELASTICSEARCH: http://sas-opendistro:9200
+  ELASTICSEARCH_CLIENT_SSL_ENABLED: "false"
+  ELASTICSEARCH_SECURITY: OPENSEARCH

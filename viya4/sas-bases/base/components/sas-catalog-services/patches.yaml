@@ -1,0 +1,393 @@
+
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-87877882fd8e5fed
+patch: |-
+  - op: add
+    path: /spec/selector/matchExpressions
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-f6bb6b79e314e52a
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0/ports
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-5796f315d18eb38d
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0/envFrom
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-57d4f7569a417ac9
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0/env
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-82ca7f04a3ce9e8b
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0/volumeDevices
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-ba133822ae1f7b3a
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/0/securityContext/capabilities/add
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-262a34ac0d0086a4
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/1/command
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-5ee72956827d643a
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/1/args
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-900c33da190a64e5
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/1/ports
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-7df42fc373119d14
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/1/volumeDevices
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-108df14c5194e1bf
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers/1/securityContext/capabilities/add
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-1463d5e3488c2681
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/command
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-9b923946d3f53051
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/args
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-b297e89c7e9e706d
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/volumeDevices
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c00e873856ee20ff
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/livenessProbe/httpGet/httpHeaders
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-255cf9d2ceae7f74
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/readinessProbe/httpGet/httpHeaders
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-759ec4988774cda3
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/startupProbe/httpGet/httpHeaders
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-6e76443386a4bb48
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/securityContext/capabilities/add
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-98f8b237549d6d60
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/supplementalGroups
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-aa973fbec60d140d
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/sysctls
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-0eafa66c7fc832c7
+patch: |-
+  - op: add
+    path: /spec/template/spec/imagePullSecrets
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-00fa40160cc72c20
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchFields
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-561e737ee9f79c0b
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/preference/matchFields
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c43b8fca2202b4aa
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/1/preference/matchFields
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-c905a154ca52cb98
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/podAntiAffinity/requiredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-a17ee9475e809dd4
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/podAntiAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/podAffinityTerm/namespaces
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-1f7ecf1f2dc6e402
+patch: |-
+  - op: add
+    path: /spec/template/spec/hostAliases
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-748051f9951f6448
+patch: |-
+  - op: add
+    path: /spec/template/spec/readinessGates
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-catalog-services
+  version: v1

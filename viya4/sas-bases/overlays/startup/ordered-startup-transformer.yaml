@@ -1,0 +1,92 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: add-start-sequencer-deployments
+patch: |-
+  kind: Deployment
+  metadata:
+    name: all-deployments
+  spec:
+    template:
+      metadata:
+        labels:
+          sas.com/start-sequencer: "true"
+      spec:
+        initContainers:
+        - name: sas-start-sequencer
+          image: sas-start-sequencer
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              add: []
+              drop:
+              - ALL
+          envFrom:
+          - configMapRef:
+              name: sas-go-config
+          - configMapRef:
+              name: sas-shared-config
+          - configMapRef:
+              name: sas-postgres-config
+          resources:
+            limits:
+              cpu: 250m
+              memory: 250Mi
+            requests:
+              cpu: 25m
+              memory: 25Mi
+target:
+  kind: Deployment
+  group: apps
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: add-start-sequencer-statefulsets
+patch: |-
+  kind: StatefulSet
+  metadata:
+    name: all-statefulsets
+    labels:
+      sas.com/start-sequencer: "true"
+  spec:
+    template:
+      metadata:
+        labels:
+          sas.com/start-sequencer: "true"
+      spec:
+        initContainers:
+        - name: sas-start-sequencer
+          image: sas-start-sequencer
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              add: []
+              drop:
+              - ALL
+          envFrom:
+          - configMapRef:
+              name: sas-go-config
+          - configMapRef:
+              name: sas-shared-config
+          - configMapRef:
+              name: sas-postgres-config
+          resources:
+            limits:
+              cpu: 250m
+              memory: 250Mi
+            requests:
+              cpu: 25m
+              memory: 25Mi
+target:
+  kind: StatefulSet
+  group: apps
+  version: v1
+# Ignoring DaemonSets and Jobs

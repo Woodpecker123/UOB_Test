@@ -1,0 +1,28 @@
+apiVersion: orchestration.sas.com/v2beta15
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-k8s-common
+    sas.com/component-version: 2.60.2-20221212.1670880199432
+  creationTimestamp: null
+  labels:
+    participate.lifecycle.sas.com/stop-all-execute-phase-0: "true"
+  name: stop-all-execute-esp
+spec:
+  args:
+  - name: namespace
+  - default: 7200s
+    name: timeout
+  steps:
+  - args:
+    - delete
+    - --namespace
+    - $namespace
+    - --wait
+    - --timeout
+    - $timeout
+    - --ignore-not-found
+    - espserver
+    - --all
+    cmd: kubectl
+    when: (.ClusterDefinitions (((.NewClusterDefinitionsIterationSpec).WithGroup "iot.sas.com").WithResource "espservers"))

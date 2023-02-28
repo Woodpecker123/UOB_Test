@@ -1,0 +1,24 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: crunchy-operator-deployment-name-transformer
+patch: |-
+  - op: replace
+    path: /metadata/name
+    value: sas-crunchy5-postgres-operator
+target:
+  kind: Deployment
+  name: pgo
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: crunchy-operator-upgrade-deployment-name-transformer
+patch: |-
+  - op: replace
+    path: /metadata/name
+    value: sas-crunchy5-postgres-operator-upgrade
+target:
+  kind: Deployment
+  name: pgo-upgrade

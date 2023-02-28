@@ -1,0 +1,27 @@
+apiVersion: orchestration.sas.com/v2beta4
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-certframe
+    sas.com/component-version: 3.34.3-20221216.1671190691502
+  creationTimestamp: null
+  labels:
+    participate.lifecycle.sas.com/deploy-pre: "true"
+  name: deploy-pre-certframe
+spec:
+  args:
+  - name: namespace
+  - name: timeout
+  steps:
+  - args:
+    - deploy-pre-certframe-execute
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    cmd: run
+    when: |-
+      (eq
+        "true"
+        (.Annotation "sas.com/sas-certframe-update" (.ClusterResource ((((((.NewClusterResourcesIterationSpec).WithNamespace $namespace).WithGroup "").WithVersion "v1").WithResource "configmap").WithName "sas-deploy-lifecycle-operation-variables")))
+      )

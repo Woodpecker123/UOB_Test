@@ -1,0 +1,23 @@
+# User-defined values are indicated by a capitalized and hyphenated name set
+# off by curly braces and a space at each end. To replace the variable, replace the
+# curly braces, interior spaces, and the variable name.
+#
+# The variables are as follows:
+# - {{ FULL-BACKUP-CRONJOB }} is the schedule for full PostgreSQL backups in Cron syntax
+# - {{ INCR-BACKUP-CRONJOB }} is the schedule for incremental PostgreSQL backups in Cron syntax
+
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: crunchy-backup-transformer
+patch: |-
+  - op: replace
+    path: /spec/backups/pgbackrest/repos/0/schedules
+    value:
+      full: {{ FULL-BACKUP-CRONJOB }}
+      incremental: {{ INCR-BACKUP-CRONJOB }}
+target:
+  group: postgres-operator.crunchydata.com
+  kind: PostgresCluster
+  name: .*
+  version: v1beta1

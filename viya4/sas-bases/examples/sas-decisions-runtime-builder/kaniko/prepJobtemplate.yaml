@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  name: sas-decisions-runtime-builder-kaniko-prep-job-config
+template:
+  metadata:
+    annotations:
+      sidecar.istio.io/inject: "false"
+    labels:
+      workload.sas.com/class: stateless
+  spec:
+    tolerations:
+      - key: workload.sas.com/class
+        operator: Equal
+        value: stateful
+        effect: NoSchedule
+      - key: workload.sas.com/class
+        operator: Equal
+        value: stateless
+        effect: NoSchedule
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: In
+              values:
+              - stateless
+        - weight: 50
+          preference:
+            matchExpressions:
+            - key: workload.sas.com/class
+              operator: NotIn
+              values:
+              - compute
+              - cas
+              - stateful
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.azure.com/mode
+              operator: NotIn
+              values:
+              - system
+    imagePullSecrets: []
+    serviceAccount: sas-decisions-runtime-builder-kaniko
+    serviceAccountName: sas-decisions-runtime-builder-kaniko
+    securityContext:
+      runAsUser: 1001
+      runAsGroup: 1001
+      fsGroup: 1001      
+    containers:
+      - name: kaniko-prep
+        image: scr
+        args:
+          - cp -rf /manifest /workspace
+        command:
+          - /bin/sh
+          - -c
+    restartPolicy: Never
+    volumes:
+      - name: kaniko
+        persistentVolumeClaim:
+          claimName: sas-decisions-runtime-builder-kaniko

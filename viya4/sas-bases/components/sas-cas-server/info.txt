@@ -1,0 +1,5 @@
+WARNING: Do not use these kustomization files in your deployment.
+This directory contains files that define Kustomize Components to create a
+SAS Cloud Analytic Services (CAS) server.
+This is an experimental feature that is not ready for general use.
+Kustomize Component support is being evaluated for a future release of SAS Viya.

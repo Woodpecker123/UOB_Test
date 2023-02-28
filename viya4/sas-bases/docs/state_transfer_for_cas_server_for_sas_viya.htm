@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" href="sas.css"/>
+        <title>State Transfer for CAS Server for SAS Viya</title>
+    </head>
+    <body>
+        <h1 id="139959076578064state-transfer-for-cas-server-for-sas-viya">State Transfer for CAS Server for SAS Viya</h1>
+<h2 id="139959076578064overview">Overview</h2>
+<p>This directory contains files to Kustomize your SAS Viya deployment to enable state transfers.
+Enabling state transfers allows the sessions, tables, and state of a running CAS server to be preserved
+between a running CAS server and a new CAS server instance which will be started as part of the CAS server upgrade.</p>
+<h2 id="139959076578064instructions">Instructions</h2>
+<h3 id="139959076578064edit-the-kustomizationyaml-file">Edit the kustomization.yaml File</h3>
+<p>To add the new CAS server to your deployment:</p>
+<ol>
+<li>
+<p>Add a reference to the <code>state-transfer</code> overlay to the resources block of the base
+kustomization.yaml file (<code>$deploy/kustomization.yaml</code>).  This overlay adds a PVC to the deployment
+to store the temporary state data during a state transfer.  If you need to increase the size of the
+transfer PVC, consider using the <code>cas-modify-pvc-storage.yaml</code> example file.</p>
+<pre class="highlight"><code class="language-yaml">resources:
+...
+- sas-bases/overlays/cas-server/state-transfer</code></pre>
+
+</li>
+<li>
+<p>Add the state-transfer transformer to enable the state transfer feature to the deployment</p>
+<pre class="highlight"><code class="language-yaml">transformers:
+...
+- sas-bases/overlays/cas-server/state-transfer/support-state-transfer.yaml</code></pre>
+
+</li>
+</ol>
+<h2 id="139959076578064build">Build</h2>
+<p>After you configure Kustomize, continue your SAS Viya deployment as documented.</p>
+    </body>
+</html>

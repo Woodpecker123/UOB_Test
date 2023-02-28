@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PodTemplate
+metadata:
+  name: change-batch-server-viya-volume-storage-class
+template:
+  spec:
+    volumes:
+    - $patch: delete
+      name: viya
+    - name: viya
+      {{ VOLUME-STORAGE-CLASS }}

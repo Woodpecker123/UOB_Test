@@ -1,0 +1,134 @@
+apiVersion: orchestration.sas.com/v3beta1
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-consul-server
+    sas.com/component-version: 1.1260001.1-20221216.1671213705338
+  creationTimestamp: null
+  labels:
+    participate.lifecycle.sas.com/assess: "true"
+  name: deploy-assess-sitedefault
+spec:
+  args:
+  - name: namespace
+    required: true
+  - name: manifest
+    required: true
+  source: |-
+    package main
+
+    import (
+      "encoding/base64"
+      "encoding/yaml"
+      "fmt"
+      "regexp"
+      "sas/orchestration/lifecycle"
+      "strconv"
+      "strings"
+      m "sas/orchestration/lifecycle/manifest"
+    )
+
+    type SiteDefault struct {
+      Config struct {
+        Application struct {
+          SasIdentitiesProvidersLdapConnection struct {
+            Host     *string `json:"host"`
+            Password *string `json:"password"`
+            Port     *string `json:"port"`
+            URL      *string `json:"url"`
+            UserDN   *string `json:"userDN"`
+          } `json:"sas.identities.providers.ldap.connection"`
+          SasIdentitiesProvidersLdapGroup struct {
+            BaseDN *string `json:"baseDN"`
+          } `json:"sas.identities.providers.ldap.group"`
+          SasIdentitiesProvidersLdapUser struct {
+            BaseDN *string `json:"baseDN"`
+          } `json:"sas.identities.providers.ldap.user"`
+        } `json:"application"`
+      } `json:"config"`
+    }
+
+    func main() {
+      manifest := lifecycle.Arg("manifest")
+      resources, err := m.Resources(manifest, m.Kind("Secret"), m.LabelSelector("sas.com/deployment=sas-viya"))
+
+      for i := 0; i < len(resources); i++ {
+        cname := getResourceName(resources[i])
+        if strings.HasPrefix(cname, "sas-consul-config-") {
+          var isAlphaNumeric = regexp.MustCompile(`^[a-zA-Z0-9]+$`).MatchString
+
+          last := cname[strings.LastIndex(cname, "-")+1:]
+          if isAlphaNumeric(last) {
+            performValidation(resources[i])
+            fmt.Println("sitedefault.yaml passed the yaml validation")
+            break
+          }
+        }
+      }
+    }
+
+    func getResourceName(secret *lifecycle.Resource) string {
+      valueI := secret.F("metadata").F("name").Value()
+      value, ok := valueI.(string)
+      if !ok {
+        return ""
+      }
+      return value
+    }
+
+    func getDataValue(secret *lifecycle.Resource, name string) string {
+      valueI := secret.F("data").F(name).Value()
+      value, ok := valueI.(string)
+      if !ok {
+        return ""
+      }
+      return value
+    }
+
+    func performValidation(r *lifecycle.Resource) {
+      sdenc := getDataValue(r, "SITEDEFAULT_CONF")
+
+      sd, err := base64.StdEncoding.DecodeString(sdenc)
+      if err != nil {
+        panic(err)
+      }
+      sdValidateData(sd)
+    }
+
+    func IsValidPortNumber(p string, max int) bool {
+      //port number is an empty string
+      if len(p) == 0 {
+        return true
+      }
+      //catch floating and negative numbers
+      if strings.Contains(p, ".") || strings.Contains(p, "-") {
+        return false
+      }
+
+      //limit port number >0 and <2**(max-1)
+      n, err := strconv.ParseInt(p, 10, max)
+      if err != nil || n == 0 {
+        return false
+      }
+      return true
+    }
+
+    func sdValidateData(data []byte) {
+      sd := SiteDefault{}
+      err := yaml.Unmarshal(data, &sd)
+      if err != nil  {
+        panic(err)
+      }
+      if sd == (SiteDefault{}) {
+        fmt.Println("sitedefault LDAP struct is empty")
+        return
+      }
+      port := sd.Config.Application.SasIdentitiesProvidersLdapConnection.Port
+      if (port != nil) {
+        if !IsValidPortNumber(*port, 17) {
+          panic("Port number needs to be between 0 and 65536: (" + (*port) + ")")
+        }
+      } else {
+        fmt.Println("sitedefault LDAP port undefined")
+      }
+    }

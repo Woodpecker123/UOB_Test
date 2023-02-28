@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" href="sas.css"/>
+        <title>Controlling SAS Viya Start-Up Sequence</title>
+    </head>
+    <body>
+        <h1 id="139959076581184controlling-sas-viya-start-up-sequence">Controlling SAS Viya Start-Up Sequence</h1>
+<h2 id="139959076581184overview">Overview</h2>
+<p>Although SAS Viya comprises components that are designed to start in any order, in some scenarios it is more efficient for the components to start in an ordered sequence.</p>
+<p>The transformers within the ordered-startup-transformer.yaml file insert an Init Container into the pods within the Deployments and StatefulSets within SAS Viya.  The Init Container ensures that a predetermined, ordered start-up sequence is respected by forcing a pod&rsquo;s start-up to wait until that particular pod can be efficiently started relative to the other pods.  The Init Container gracefully exits when it detects the appropriate time to start its accompanying pod, which allows the pod to start.</p>
+<p>This design ensures that certain components start before others and allows Kubernetes to pull container Images in a priority-based sequence.  This design also provides a degree of resource optimization, in that resources are more efficiently spent during SAS Viya start-up with a priority given to starting essential components first.</p>
+<h2 id="139959076581184installation">Installation</h2>
+<p>Add <code>sas-bases/overlays/startup/ordered-startup-transformer.yaml</code> to the transformers block in your base kustomization.yaml (<code>$deploy/kustomization.yaml</code>) file.  Ensure that ordered-startup-transformer.yaml is listed before <code>sas-bases/overlays/required/transformers.yaml</code>.</p>
+<p>Here is an example:</p>
+<pre class="highlight"><code class="language-yaml">...
+transformers:
+...
+- sas-bases/overlays/startup/ordered-startup-transformer.yaml
+- sas-bases/overlays/required/transformers.yaml</code></pre>
+
+<p>To apply the change, perform the appropriate steps at <a href="https://go.documentation.sas.com/doc/en/itopscdc/v_018/dplyml0phy0dkr/p127f6y30iimr6n17x2xe9vlt54q.htm">Deploy the Software</a>.</p>
+    </body>
+</html>

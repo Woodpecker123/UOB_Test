@@ -1,0 +1,267 @@
+
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-fd7a6bcff52f654c
+patch: |-
+  - op: add
+    path: /spec/selector/matchExpressions
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-cbb1df5b3b8ff5e9
+patch: |-
+  - op: add
+    path: /spec/template/spec/initContainers
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-e21ff0545b6f6a80
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/command
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-f832ed1cc9e69ff0
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/args
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-f9e8d1b93887bacc
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/volumeDevices
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-509ee0e46fe64596
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/livenessProbe/httpGet/httpHeaders
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-299c5fd559a2a5eb
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/readinessProbe/httpGet/httpHeaders
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-46d61a83617f81fa
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/startupProbe/httpGet/httpHeaders
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-93a640b61cf8982f
+patch: |-
+  - op: add
+    path: /spec/template/spec/containers/0/securityContext/capabilities/add
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-6b8eb2eabbc88497
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/supplementalGroups
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-006eb66bf1ddd3ec
+patch: |-
+  - op: add
+    path: /spec/template/spec/securityContext/sysctls
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-7c21339121d3ba8e
+patch: |-
+  - op: add
+    path: /spec/template/spec/imagePullSecrets
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-8c809db4622f5257
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/0/matchFields
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-7409b1a1541bf352
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/preference/matchFields
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-a6262beecd9af949
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/1/preference/matchFields
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-2ab2e053a81b479f
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/podAntiAffinity/requiredDuringSchedulingIgnoredDuringExecution
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-f61219782c338dcb
+patch: |-
+  - op: add
+    path: /spec/template/spec/affinity/podAntiAffinity/preferredDuringSchedulingIgnoredDuringExecution/0/podAffinityTerm/namespaces
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-737a1e867104a6f1
+patch: |-
+  - op: add
+    path: /spec/template/spec/hostAliases
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: patch-transformer-e2319ccc7ee71b2f
+patch: |-
+  - op: add
+    path: /spec/template/spec/readinessGates
+    value: []
+target:
+  group: apps
+  kind: Deployment
+  name: sas-data-mining
+  version: v1

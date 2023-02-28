@@ -1,0 +1,25 @@
+# WARNING: Do not attempt to use this kustomization file in your deployment.
+# WARNING: Kustomize Component support in CAS is being evaluated for a future release of SAS Viya.
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-cas-commonfiles-pvc-patch
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/volumes/-
+    value:
+      name: commonfilesvols
+      persistentVolumeClaim:
+        claimName: sas-commonfiles
+        readOnly: true
+  - op: add
+    path: /spec/controllerTemplate/spec/containers/0/volumeMounts/-
+    value:
+      name: commonfilesvols
+      mountPath: /opt/sas/viya/home/commonfiles
+      readOnly: true
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  version: v1alpha1

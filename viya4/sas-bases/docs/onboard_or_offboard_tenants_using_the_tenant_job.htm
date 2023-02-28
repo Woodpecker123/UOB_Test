@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" href="sas.css"/>
+        <title>Onboard or Offboard Tenants Using the Tenant Job</title>
+    </head>
+    <body>
+        <h1 id="139959077319296onboard-or-offboard-tenants-using-the-tenant-job">Onboard or Offboard Tenants Using the Tenant Job</h1>
+<h2 id="139959077319296overview">Overview</h2>
+<p>The deployment of SAS Viya creates an initial provider tenant. After deployment, a Kubernetes user with elevated permissions runs the tenant job to onboard one or more tenants. All tenants onboard into the
+same namespace as the provider. Subsequent onboarding jobs run without interrupting service to existing tenants.</p>
+<p>For each new tenant, the onboarding process creates a new PostgreSQL database (database-per-tenant mode) or new schemas in a shared database (schema-per-application-tenant mode, which is the default mode). All tenants share the same database server configuration. The tenant database or shared database can be in the SAS Viya internal database server or it can be in an external database server. The database server configuration and database tenant mode are specified during deployment. To learn more about deployment, see the README file at 
+<code>$deploy/sas-bases/examples/multi-tenant/README.md</code> (for Markdown format) or 
+at <code>$deploy/sas-bases/docs/multi-tenant_deployment.htm</code> (for HTML format).</p>
+<p>Onboarding adds users and groups, installs tenant-specific applications, and optionally enables TLS security. Offboarding deletes users and groups, drops the database or schemas, and uninstalls tenant-specific applications.</p>
+<p>Cloud Analytic Services (CAS) are installed or uninstalled separately after you run the tenant onboarding or offboarding job. To learn more, see <a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=caltenants&amp;docsetTarget=p0emzq13c0zbhxn1hktsdlmig934.htm#n0uh9ovr91gtjvn1hvxtr50do7kt">Onboard a CAS Server</a>.</p>
+<h2 id="139959077319296prepare-to-onboard-or-offboard">Prepare to Onboard or Offboard</h2>
+<h3 id="139959077319296permissions">Permissions</h3>
+<p>Elevated Kubernetes permissions are required to run the tenant job and perform the prerequisite steps.</p>
+<h3 id="139959077319296prerequisites">Prerequisites</h3>
+<p>The sas-tenant-job can be used to onboard or offboard tenants. Each job type has its own prerequisite tasks. These tasks must be performed before running the tenant job.</p>
+<ul>
+<li>
+<p><a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=caltenants&amp;docsetTarget=p0emzq13c0zbhxn1hktsdlmig934.htm#n1fptbibrh96r8n1jy317onpjd8r">Onboarding prerequisites</a></p>
+</li>
+<li>
+<p><a href="https://documentation.sas.com/?cdcId=sasadmincdc&amp;cdcVersion=default&amp;docsetId=caltenants&amp;docsetTarget=p0emzq13c0zbhxn1hktsdlmig934.htm#n0m5v7ldcutnmqn1e5ts1toy7fx5">Offboarding prerequisites</a> </p>
+</li>
+</ul>
+<h3 id="139959077319296copy-the-tenant-job-files">Copy the Tenant Job Files</h3>
+<ol>
+<li>
+<p>If you have any files in <code>$deploy/site-config/sas-tenant-job/</code>, move them to a new sub-directory or delete them to ensure that you utilize the latest files in the next step.</p>
+</li>
+<li>
+<p>Always copy the latest tenant files from <code>$deploy/sas-bases/examples/sas-tenant-job/*</code> to <code>$deploy/site-config/sas-tenant-job/</code>.</p>
+</li>
+<li>
+<p>Add write permission to all of the YAML files in the <code>$deploy/site-config/sas-tenant-job/</code> directory.</p>
+</li>
+</ol>
+<h3 id="139959077319296specify-the-namespace-of-the-deployment">Specify the Namespace of the Deployment</h3>
+<p>Edit each of the following files to replace all occurrences of <code>{{ VIYA-DEPLOYMENT-NAMESPACE }}</code>
+with the name of your SAS Viya namespace. </p>
+<ul>
+<li>
+<p><code>$deploy/site-config/sas-tenant-job/tenant-job-service-account-role.yaml</code></p>
+</li>
+<li>
+<p><code>$deploy/site-config/sas-tenant-job/kustomization-onboard.yaml</code></p>
+</li>
+<li>
+<p><code>$deploy/site-config/sas-tenant-job/kustomization-offboard.yaml</code></p>
+</li>
+</ul>
+<p>If you are using a mirror registry for the deployment, be sure to uncomment (enable) the mirror registry transformer <code>site-config/mirror.yaml</code> in the copies of these example files.</p>
+<h3 id="139959077319296apply-the-service-account-role-for-the-tenant-job">Apply the Service Account Role for the Tenant Job</h3>
+<p>The tenant job requires the service account role so that it can make API calls.</p>
+<p><strong>Note:</strong>
+This role must be applied before you onboard your first tenant. For subsequent runs of the tenant job, re-apply this role if the role has been dropped, or if the tenant-job-service-account-role.yaml file has changed. To ensure the latest role has been applied, you may want to always re-apply this role before each onboard or offboard job.</p>
+<p>Apply the service account role.</p>
+<pre class="highlight"><code>kubectl apply -f $deploy/site-config/sas-tenant-job/tenant-job-service-account-role.yaml</code></pre>
+
+<h2 id="139959077319296onboard-or-offboard">Onboard or Offboard</h2>
+<ol>
+<li>
+<p>Ensure that you are in the new tenant job directory, such as
+   <code>$deploy/site-config/sas-tenant-job/</code>.</p>
+</li>
+<li>
+<p>Edit the job file <code>tenant-onboard-job.yaml</code> or <code>tenant-offboard-job.yaml</code>.</p>
+<ul>
+<li>
+<p>Replace <code>{{ SAS-TENANT-IDS }}</code> with the valid tenant ID/tenant IDs that will be onboarded or offboarded.</p>
+<p>Example:</p>
+<pre><code>  Single tenant ID: `"acme"`
+
+  or
+
+  Multiple tenant IDs: `"acme, cyberdyne, intech"`
+
+  **Note:**
+    Quotation marks and commas are required if you include multiple tenant IDs in one action.
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>Update the default job parameters in the <code>tenant-onboard-job.yaml</code> or
+   <code>tenant-offboard-job.yaml</code> file. Refer to <a href="#139959077319296job-parameters">Job Parameters</a> below.</p>
+</li>
+<li>
+<p>To create the kustomization.yaml, enter the following copy command.</p>
+<p>If you are onboarding:</p>
+<pre class="highlight"><code>cp -v kustomization-onboard.yaml kustomization.yaml</code></pre>
+
+<p>If you are offboarding:</p>
+<pre class="highlight"><code>cp -v kustomization-offboard.yaml kustomization.yaml</code></pre>
+
+</li>
+<li>
+<p>If your SAS Viya deployment disables Transport Layer Security (TLS), edit <code>kustomization.yaml</code> and comment out the appropriate line:</p>
+<p>If you are onboarding:</p>
+<pre class="highlight"><code>#- tenant-onboard-job-tls-transformer.yaml</code></pre>
+
+<p>If you are offboarding:</p>
+<pre class="highlight"><code>#- tenant-offboard-job-tls-transformer.yaml</code></pre>
+
+</li>
+<li>
+<p>In the new job directory, build the manifest file.</p>
+<p>If you are onboarding:</p>
+<pre class="highlight"><code>kustomize build . -o site-onboard.yaml --load_restrictor=none</code></pre>
+
+<p>If you are offboarding:</p>
+<pre class="highlight"><code>kustomize build . -o site-offboard.yaml --load_restrictor=none</code></pre>
+
+</li>
+<li>
+<p>If your SAS Viya containers and <code>sas-tenant-job</code> come from the same registry, get the full name of the <code>sas-image-pull-secrets</code> currently in your deployment.</p>
+<pre class="highlight"><code>kubectl get secrets -n {{ name-of-namespace }} | grep sas-image-pull-secrets</code></pre>
+
+<p>Then edit the site-onboard.yaml and site-offboard.yaml files by replacing <code>sas-image-pull-secrets</code> with the full secret name you just retrieved.</p>
+</li>
+<li>
+<p>If your SAS Viya containers and <code>sas-tenant-job</code> come from different registries, create a new secret named <code>sas-tenant-job-image-pull-secrets</code>.</p>
+<pre class="highlight"><code>kubectl create secret -n {{ name-of-namespace }} docker-registry sas-tenant-job-image-pull-secrets --docker-server=cr.sas.com --docker-username=xxxxxxxxxx --docker-password=xxxxxxxx --docker-email=Firstname.Lastname@sas.com</code></pre>
+
+<p>Then edit the site-onboard.yaml and site-offboard.yaml files, by replacing <code>sas-image-pull-secrets</code> with <code>sas-tenant-job-image-pull-secrets</code>.</p>
+</li>
+<li>
+<p>Run the onboarding or offboarding command:</p>
+<pre><code>```
+kubectl create -f site-onboard.yaml
+```
+
+or
+
+```
+kubectl create -f site-offboard.yaml
+```
+
+The job runs under the name `sas-tenant-{{onboard-or-offboard}}-job-{{suffix}}`. For example, 
+`sas-tenant-onboard-job-4mf9j-zp2n9` or `sas-tenant-offboard-job-62llh-pmw8j`.
+
+**Note:** The suffix is uniquely generated by Kubernetes for each job.
+</code></pre>
+</li>
+<li>
+<p>Use the following commands to track the job.</p>
+<pre><code>To list tenant jobs:
+
+```
+kubectl get jobs -n {{ name-of-namespace }} -l run=sas-tenant-onboard-job
+```
+
+or
+
+```
+kubectl get jobs -n {{ name-of-namespace }} -l run=sas-tenant-offboard-job
+```
+
+To show details for a tenant job:
+
+```
+kubectl -n {{ name-of-namespace }} describe jobs sas-tenant-onboard-job
+```
+
+or
+
+```
+kubectl -n {{ name-of-namespace }} describe jobs sas-tenant-offboard-job
+```
+
+To view the log of a specific tenant job, first find its pod name:
+
+```
+kubectl get pods -n {{ name-of-namespace }} | grep sas-tenant-onboard-job
+```
+
+or
+
+```
+kubectl get pods -n {{ name-of-namespace }} | grep sas-tenant-offboard-job
+```
+
+To see the log:
+
+```
+kubectl -n {{ name-of-namespace }} logs {{ sas-tenant-onboard-job-pod-name }}
+```
+
+or
+
+```
+kubectl -n {{ name-of-namespace }} logs {{ sas-tenant-offboard-job-pod-name }}
+```
+</code></pre>
+</li>
+</ol>
+<h3 id="139959077319296job-parameters">Job Parameters</h3>
+<p><strong>TENANT_LIFECYCLE_ACTION</strong></p>
+<p>The action to perform. The options are onboard and offboard.</p>
+<p><strong>SAS_TENANT_IDS</strong></p>
+<p>One or more tenant IDs to onboard or offboard.</p>
+<p>Tenant IDs have the following restrictions:
+* Cannot be longer than 16 characters.
+* Must be completely lowercase.
+* Must start with a letter.
+* Must be letters and numbers only.
+* Cannot start with &ldquo;sas&rdquo;.</p>
+<p>In addition, the following tenant IDs are reserved and cannot be used:
+* default
+* provider
+* shared
+* sharedservices
+* spre
+* uaa
+* viya</p>
+<p><strong>SAS_LOG_LEVEL</strong></p>
+<p>The logging level for the tenant job. Valid values are FATAL, ERROR, WARN, DEBUG, or INFO. The default level is DEBUG.</p>
+<h3 id="139959077319296password-parameters">Password Parameters</h3>
+<p>When a new tenant is onboarded, an initial administrator account named sasprovider is created. Use the following job parameters to set the password for sasprovider. These parameters are used for onboarding and are never used for offboarding. If you re-onboard an existing tenant, the password parameters are not used and the existing sasprovider password is not changed. If you do not want to set the sasprovider password to a specific value, remove all of the password parameters from the job manifest file and the account will be assigned a random password.</p>
+<p>To reset the password, use the following steps:</p>
+<ol>
+<li>
+<p>Get the full name of the sas-tenant-onboard-job pod that was used to onboard the tenant</p>
+<pre><code>```
+kubectl get pods -n {{ name-of-namespace }} | grep sas-tenant-onboard-job
+```
+</code></pre>
+</li>
+<li>
+<p>Get the password reset link from the log. This link expires 24 hours after the tenant is onboarded.</p>
+<pre><code>```
+kubectl -n {{ name-of-namespace }} logs {{ sas-tenant-onboard-job-pod-name }} | grep reset_password
+```
+</code></pre>
+</li>
+<li>
+<p>Go to the link and reset the password. The full URL will take this form:</p>
+<pre><code>```
+https://&lt;tenantID&gt;.&lt;hostname&gt;/SASLogon/reset_password?code=&lt;resetCode&gt;
+```
+</code></pre>
+</li>
+</ol>
+<p><strong>SAS_PROVIDER_PASSWORD</strong></p>
+<p>Optional. Can be used to set a single sasprovider password for all tenants being onboarded. If this parameter is set, then you should not set SAS_PROVIDER_PASSWORD_{{TENANT-ID}} parameters as defined below. </p>
+<p><strong>SAS_PROVIDER_PASSWORD_{{TENANT-ID}}</strong></p>
+<p>Optional. Can be used to specify a unique sasprovider password for each tenant being onboarded. The parameter suffix should be the tenant ID. For example, to set the sasprovider password for the tenant &ldquo;acme&rdquo;, set the job parameter SAS_PROVIDER_PASSWORD_ACME. To set the password for a tenant named &ldquo;cyberdyne&rdquo;, set the job parameter SAS_PROVIDER_PASSWORD_CYBERDYNE. If these parameters are set, you should not set SAS_PROVIDER_PASSWORD.</p>
+    </body>
+</html>

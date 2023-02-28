@@ -1,0 +1,28 @@
+apiVersion: orchestration.sas.com/v2beta4
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-consul-server
+    sas.com/component-version: 1.1260001.1-20221216.1671213705338
+  creationTimestamp: null
+  name: deploy-pre-consul
+spec:
+  args:
+  - name: namespace
+  - name: timeout
+  - name: serviceAccountName
+  steps:
+  - args:
+    - deploy-pre-consul-execute
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    - --serviceAccountName
+    - $serviceAccountName
+    cmd: run
+    when: |-
+      (eq
+        "true"
+        (.Annotation "sas.com/sas-consul-server-update" (.ClusterResource ((((((.NewClusterResourcesIterationSpec).WithNamespace $namespace).WithGroup "").WithVersion "v1").WithResource "configmap").WithName "sas-deploy-lifecycle-operation-variables")))
+      )

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" href="sas.css"/>
+        <title>Configuration Settings for PostgreSQL Database Tuning</title>
+    </head>
+    <body>
+        <h1 id="139959077431232configuration-settings-for-postgresql-database-tuning">Configuration Settings for PostgreSQL Database Tuning</h1>
+<h2 id="139959077431232overview">Overview</h2>
+<p>PostgreSQL is highly configurable, allowing you to tune the server(s) to meet expected workloads. This README describes how to tune and adjust the configuration for your PostgreSQL clusters.</p>
+<h2 id="139959077431232installation">Installation</h2>
+<ol>
+<li>
+<p>Copy the file <code>$deploy/sas-bases/examples/crunchydata/tuning/crunchy-tuning-transformer.yaml</code> into your <code>$deploy/site-config/crunchydata/</code> directory.</p>
+</li>
+<li>
+<p>Rename the copied file to something unique. SAS recommends following the naming convention <code>{{ TRANSFORMER-NAME }}-crunchy-tuning-transformer.yaml</code>. For example, a copy of the transformer targeting Platform PostgreSQL could be named <code>platform-postgres-crunchy-tuning-transformer.yaml</code>.</p>
+</li>
+<li>
+<p>Adjust the values in your copied file following the in-line comments and the &lsquo;Customize the Configuration Settings&rsquo; section that follows.</p>
+</li>
+<li>
+<p>Add a reference to the file in the transformers block of the base kustomization.yaml (<code>$deploy/kustomization.yaml</code>). The following example shows the content based on a file named <code>platform-postgres-crunchy-tuning-transformer.yaml</code>:</p>
+<pre class="highlight"><code class="language-yaml">transformers:
+- site-config/crunchydata/platform-postgres-crunchy-tuning-transformer.yaml</code></pre>
+
+</li>
+</ol>
+<h3 id="139959077431232customize-the-configuration-settings">Customize the Configuration Settings</h3>
+<h4 id="139959077431232postgresql-configuration-parameters">PostgreSQL Configuration Parameters</h4>
+<p>You can adjust the default values in the copied transformer file to suit the needs of your deployment. If the parameters are removed, then the PostgreSQL will use its own default values, which might incur a performance degradation.</p>
+<p>For a multi-tenant deployment, consider adjusting the &lsquo;max_connections&rsquo; and &lsquo;max_prepared_transactions&rsquo; values according to <a href="https://pubshelpcenter.unx.sas.com/test/doc/en/sasadmincdc/v_032/caltuning/n0adso3frm5ioxn1s2kwa4vbm9db.htm#n0u9kakykv7eyrn1ckqndq34o478">Multi-Tenancy Considerations</a>.</p>
+<p>You can also add other parameters to the copied transformer file with the values you want. See the in-line comments in the copied transformer file. For the complete list of available PostgreSQL configuration parameters, see <a href="https://www.postgresql.org/docs/12/config-setting.html">PostgreSQL Server Configuration</a>.</p>
+<h4 id="139959077431232postgresql-hba-setting-to-disable-tls">PostgreSQL HBA Setting to Disable TLS</h4>
+<p>Deployments that are not using TLS or are using Front-Door TLS must uncomment the pg_hba entry in the copied transformer file.</p>
+<h4 id="139959077431232patroni-dynamic-configuration-settings">Patroni Dynamic Configuration Settings</h4>
+<p><strong>Note:</strong> SAS does not recommend changing the default Patroni settings because it might negatively impact the Patroni functionality.</p>
+<p>If you need to change any Patroni dynamic configuration settings, add the relevent settings to the copied transformer file under the dynamicConfiguration block. For example, if you want to change the settings for &lsquo;loop_wait&rsquo; and &lsquo;ttl&rsquo;, add them to the proper place in the copied transformer file as shown below:</p>
+<p><pre class="highlight"><code class="language-yaml">    path: /spec/patroni/dynamicConfiguration
+    value:
+      loop_wait: 10
+      ttl: 30
+      postgresql:
+        parameters:
+          ...</code></pre>
+For the complete list of available settings, see <a href="https://patroni.readthedocs.io/en/latest/SETTINGS.html">Patroni Dynamic Configuration Settings</a>.</p>
+<h2 id="139959077431232additional-resources">Additional Resources</h2>
+<p><a href="http://documentation.sas.com/?cdcId=itopscdc&amp;cdcVersion=default&amp;docsetId=dplyml0phy0dkr&amp;docsetTarget=titlepage.htm&amp;locale=en">SAS Viya Deployment Guide</a></p>
+<p><a href="https://www.postgresql.org/docs/12/auth-pg-hba-conf.html">PostgreSQL Client Host-Based Authentication</a></p>
+    </body>
+</html>

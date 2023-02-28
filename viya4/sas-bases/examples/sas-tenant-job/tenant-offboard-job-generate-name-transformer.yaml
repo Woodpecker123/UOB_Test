@@ -1,0 +1,12 @@
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-offboard-tenant-job-generate-name-transformer
+patch: |-
+  - op: move
+    from: /metadata/name
+    path: /metadata/generateName
+target:
+  kind: Job
+  name: sas-tenant-offboard-job-

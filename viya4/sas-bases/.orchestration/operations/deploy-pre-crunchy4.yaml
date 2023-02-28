@@ -1,0 +1,28 @@
+apiVersion: orchestration.sas.com/v2beta11
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-crunchy5-postgres-operator
+    sas.com/component-version: 1.0.27-20221130.1669844919471
+  creationTimestamp: null
+  labels:
+    participate.lifecycle.sas.com/deploy-pre: "true"
+  name: deploy-pre-crunchy4
+spec:
+  args:
+  - name: namespace
+    required: true
+  - name: timeout
+    required: true
+  - name: serviceAccountName
+  steps:
+  - args:
+    - deploy-pre-crunchy4-execute
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    - --serviceAccountName
+    - $serviceAccountName
+    cmd: run
+    when: (.GetVariable "dataserver.sas.com/crunchy-v4")

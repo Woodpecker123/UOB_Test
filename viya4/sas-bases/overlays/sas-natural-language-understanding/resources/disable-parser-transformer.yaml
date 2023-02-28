@@ -1,0 +1,18 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-natural-language-understanding-disable-parser-transformer
+patch: |-
+  - op: replace
+    path: /spec/template/spec/containers/0/resources/requests/memory
+    value: 650M
+  - op: add
+    path: /spec/template/spec/containers/0/env/-
+    value:
+      name: SAS_NLU_ENABLE_DEPENDENCY_PARSER
+      value: "false"
+target:
+  group: apps
+  version: v1
+  kind: Deployment
+  name: sas-natural-language-understanding

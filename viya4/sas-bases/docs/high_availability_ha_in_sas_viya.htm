@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" href="sas.css"/>
+        <title>High Availability (HA) in SAS Viya</title>
+    </head>
+    <body>
+        <h1 id="139959078011520high-availability-ha-in-sas-viya">High Availability (HA) in SAS Viya</h1>
+<h2 id="139959078011520overview">Overview</h2>
+<p>SAS Viya can be deployed as a High Availability (HA) system. In this mode, SAS
+Viya has redundant stateless and stateful services to handle service outages,
+such as an errant Kubernetes node.</p>
+<h2 id="139959078011520enable-high-availability">Enable High Availability</h2>
+<p>A kustomize transformer enables High Availability (HA) in SAS Viya among the
+stateless microservices. Stateful services, with the exception of SMP CAS, are
+enabled HA at initial deployment.</p>
+<p>Add the <code>sas-bases/overlays/scaling/ha/enable-ha-transformer.yaml</code> to the
+transformers block in your base kustomization.yaml file.</p>
+<pre class="highlight"><code class="language-yaml">...
+transformers:
+...
+- sas-bases/overlays/scaling/ha/enable-ha-transformer.yaml</code></pre>
+
+<p>To apply the change run <code>kustomize build -o site.yaml</code>, then apply the updated
+<code>site.yaml</code> to your deployment by running <code>kubectl apply -f site.yaml</code>.</p>
+<h2 id="139959078011520disable-high-availability">Disable High Availability</h2>
+<p>To disable HA, first remove the transformer you added in the previous step. Run
+<code>kustomize build -o site.yaml</code>, then apply the updated <code>site.yaml</code> to your
+deployment by running <code>kubectl apply -f site.yaml</code>.</p>
+    </body>
+</html>

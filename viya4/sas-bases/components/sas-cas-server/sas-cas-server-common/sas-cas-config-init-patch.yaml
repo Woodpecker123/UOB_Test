@@ -1,0 +1,46 @@
+# WARNING: Do not attempt to use this kustomization file in your deployment.
+# WARNING: Kustomize Component support in CAS is being evaluated for a future release of SAS Viya.
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-config-init-container
+patch: |-
+  - op: add
+    path: /spec/controllerTemplate/spec/initContainers/-
+    value:
+      image: sas-config-init
+      imagePullPolicy: IfNotPresent
+      name: sas-config-init
+      env: []
+      envFrom:
+        - configMapRef:
+            name: sas-go-config
+        - configMapRef:
+            name: sas-shared-config
+        - configMapRef:
+            name: sas-access-config
+        - secretRef:
+            name: sas-consul-client
+      volumeMounts:
+        - mountPath: /cas/config/
+          name: cas-config-volume
+        - mountPath: /opt/sas/viya/home/commonfiles
+          name: commonfilesvols
+      resources:
+        limits:
+          memory: 500Mi
+          cpu: 500m
+        requests:
+          memory: 500Mi
+          cpu: 500m
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+target:
+  group: viya.sas.com
+  kind: CASDeployment
+  version: v1alpha1

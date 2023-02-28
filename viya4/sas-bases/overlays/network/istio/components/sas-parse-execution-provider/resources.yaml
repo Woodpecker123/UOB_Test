@@ -1,0 +1,41 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-parse-execution-provider
+spec:
+  host: sas-parse-execution-provider
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /parseExecutionProvider/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-parse-execution-provider
+    sas.com/admin: namespace
+  name: sas-parse-execution-provider
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /parseExecutionProvider
+    - uri:
+        prefix: /parseExecutionProvider/
+    route:
+    - destination:
+        host: sas-parse-execution-provider
+    timeout: 300s
+

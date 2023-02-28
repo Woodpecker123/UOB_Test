@@ -1,0 +1,41 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-sentiment-execution-provider
+spec:
+  host: sas-sentiment-execution-provider
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /sentimentExecutionProvider/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-sentiment-execution-provider
+    sas.com/admin: namespace
+  name: sas-sentiment-execution-provider
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /sentimentExecutionProvider
+    - uri:
+        prefix: /sentimentExecutionProvider/
+    route:
+    - destination:
+        host: sas-sentiment-execution-provider
+    timeout: 300s
+

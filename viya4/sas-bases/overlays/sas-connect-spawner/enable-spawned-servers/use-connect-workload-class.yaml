@@ -1,0 +1,38 @@
+###############################################################################
+# Kustomize patch to reset the workload class to connect instead of stateless
+# in sas-connect-spawner deployment.
+# See README.md for more information.
+###############################################################################
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: use-connect-workload-class
+patch: |-
+  - op: replace
+    path: /spec/template/spec/tolerations
+    value:
+    - effect: NoSchedule
+      key: workload.sas.com/class
+      operator: Equal
+      value: connect
+  - op: replace
+    path: /metadata/labels/workload.sas.com~1class
+    value: connect
+  - op: replace
+    path: /spec/template/metadata/labels/workload.sas.com~1class
+    value: connect
+  - op: replace
+    path: /spec/template/spec/affinity/nodeAffinity/preferredDuringSchedulingIgnoredDuringExecution/0
+    value:
+      preference:
+        matchExpressions:
+        - key: workload.sas.com/class
+          operator: In
+          values:
+          - connect
+      weight: 100
+target:
+  version: v1
+  group: apps
+  kind: Deployment
+  name: sas-connect-spawner

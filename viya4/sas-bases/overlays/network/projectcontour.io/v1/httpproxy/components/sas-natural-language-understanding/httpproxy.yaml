@@ -1,0 +1,34 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-natural-language-understanding
+    sas.com/admin: namespace
+  name: sas-natural-language-understanding
+spec:
+  routes:
+  - conditions:
+    - prefix: /naturalLanguageUnderstanding
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /naturalLanguageUnderstanding/
+    services:
+    - name: sas-natural-language-understanding
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /naturalLanguageUnderstanding/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-natural-language-understanding
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

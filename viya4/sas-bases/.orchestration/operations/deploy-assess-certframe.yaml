@@ -1,0 +1,25 @@
+apiVersion: orchestration.sas.com/v2beta4
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-certframe
+    sas.com/component-version: 3.34.3-20221216.1671190691502
+  creationTimestamp: null
+  labels:
+    participate.lifecycle.sas.com/deploy-assess: "true"
+  name: deploy-assess-certframe
+spec:
+  args:
+  - name: namespace
+  - name: manifest
+  steps:
+  - args:
+    - deploy-assess-certframe-execute
+    - --namespace
+    - $namespace
+    cmd: run
+    when: |-
+      (or
+        (.ClusterResource ((((((.NewClusterResourcesIterationSpec).WithNamespace $namespace).WithGroup "batch").WithVersion "v1").WithResource "job").WithName "sas-create-openssl-ingress-certificate"))
+        (.ClusterResource ((((((.NewClusterResourcesIterationSpec).WithNamespace $namespace).WithGroup "batch").WithVersion "v1").WithResource "job").WithName "sas-create-openssl-ingres-certificate"))
+      )

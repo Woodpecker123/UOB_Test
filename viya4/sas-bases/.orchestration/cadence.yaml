@@ -1,0 +1,11 @@
+apiVersion: orchestration.sas.com/v1
+kind: Cadence
+metadata:
+  creationTimestamp: null
+  name: cadence
+spec:
+  displayName: Stable 2022.12
+  name: stable
+  release: "20221224.1671914999282"
+  version: "2022.12"
+

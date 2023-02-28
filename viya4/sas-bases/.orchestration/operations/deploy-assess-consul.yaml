@@ -1,0 +1,27 @@
+apiVersion: orchestration.sas.com/v2beta4
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-consul-server
+    sas.com/component-version: 1.1260001.1-20221216.1671213705338
+  creationTimestamp: null
+  name: deploy-assess-consul
+spec:
+  args:
+  - name: namespace
+  - name: manifest
+  steps:
+  - args:
+    - deploy-assess-consul-execute
+    - --namespace
+    - $namespace
+    cmd: run
+    when: |-
+      (and
+        (.ManifestResource $manifest (((((.NewManifestResourcesIterationSpec).WithGroup "apps").WithVersion "v1").WithKind "StatefulSet").WithName "sas-consul-server"))
+        (.ClusterResource ((((((.NewClusterResourcesIterationSpec).WithNamespace $namespace).WithGroup "apps").WithVersion "v1").WithResource "statefulset").WithName "sas-consul-server"))
+        (ne
+          (.Annotation "sas.com/component-version" (.ManifestResource $manifest (((((.NewManifestResourcesIterationSpec).WithGroup "apps").WithVersion "v1").WithKind "StatefulSet").WithName "sas-consul-server")))
+          (.Annotation "sas.com/component-version" (.ClusterResource ((((((.NewClusterResourcesIterationSpec).WithNamespace $namespace).WithGroup "apps").WithVersion "v1").WithResource "statefulset").WithName "sas-consul-server")))
+        )
+      )

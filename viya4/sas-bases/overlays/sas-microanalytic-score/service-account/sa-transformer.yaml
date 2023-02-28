@@ -1,0 +1,14 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata: 
+  name: microanalytic-score-transformer
+patch: |-
+  # Add serviceAcountName
+  - op: add
+    path: /spec/template/spec/serviceAccountName
+    value: sas-microanalytic-score
+target:
+  group: apps
+  kind: Deployment
+  name: sas-microanalytic-score
+  version: v1

@@ -1,0 +1,18 @@
+# WARNING: Do not attempt to use this kustomization file in your deployment.
+# WARNING: Kustomize Component support in CAS is being evaluated for a future release of SAS Viya.
+kind: Component
+apiVersion: kustomize.config.k8s.io/v1alpha1
+resources:
+- cas-pvcs.yaml
+- cas-server-cr.yaml
+configMapGenerator:
+  - name: sas-cas
+transformers:
+- cas-fsgroup-security-context.yaml
+- annotations.yaml
+- node-affinity.yaml
+components:
+- ../sas-cas-backup-agent
+- ../sas-cas-consul-agent
+configurations:
+- kustomizeconfig.yaml

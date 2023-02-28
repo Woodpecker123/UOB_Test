@@ -1,0 +1,31 @@
+###############################################################################
+# Kustomize patch to add ability to spawn servers in sas-connect-spawner
+# deployment.
+# See README.md for more information.
+###############################################################################
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: sas-enable-spawned-servers
+patch: |-
+  - op: replace
+    path: /spec/template/spec/containers/0/securityContext/allowPrivilegeEscalation
+    value: true
+  - op: add
+    path: /spec/template/spec/containers/0/securityContext/runAsNonRoot
+    value: false
+  - op: add
+    path: /spec/template/spec/containers/0/securityContext/capabilities/add/-
+    value: SETGID
+  - op: add
+    path: /spec/template/spec/containers/0/securityContext/capabilities/add/-
+    value: SETUID
+  - op: add
+    path: /spec/template/spec/containers/0/securityContext/capabilities/add/-
+    value: CHOWN
+target:
+  version: v1
+  group: apps
+  kind: Deployment
+  name: sas-connect-spawner

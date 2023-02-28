@@ -1,0 +1,21 @@
+apiVersion: orchestration.sas.com/v2beta5
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-certframe
+    sas.com/component-version: 3.34.3-20221216.1671190691502
+  creationTimestamp: null
+  name: deploy-assess-certframe-execute
+spec:
+  args:
+  - name: namespace
+  steps:
+  - args:
+    - annotate
+    - --namespace
+    - $namespace
+    - configmap
+    - sas-deploy-lifecycle-operation-variables
+    - sas.com/sas-certframe-update=true
+    - --overwrite
+    cmd: kubectl

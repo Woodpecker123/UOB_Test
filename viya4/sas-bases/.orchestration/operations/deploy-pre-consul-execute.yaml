@@ -1,0 +1,104 @@
+apiVersion: orchestration.sas.com/v2beta4
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-consul-server
+    sas.com/component-version: 1.1260001.1-20221216.1671213705338
+  creationTimestamp: null
+  name: deploy-pre-consul-execute
+spec:
+  args:
+  - name: namespace
+  - name: timeout
+  - name: serviceAccountName
+  steps:
+  - args:
+    - delete
+    - --namespace
+    - $namespace
+    - --wait
+    - --timeout
+    - $timeout
+    - --ignore-not-found
+    - service
+    - sas-consul-server-internal
+    cmd: kubectl
+  - args:
+    - delete
+    - --namespace
+    - $namespace
+    - --wait
+    - --timeout
+    - $timeout
+    - --ignore-not-found
+    - role
+    - sas-prepare-for-update-sas-consul-server
+    cmd: kubectl
+    when: $serviceAccountName
+  - args:
+    - create
+    - --namespace
+    - $namespace
+    - role
+    - sas-prepare-for-update-sas-consul-server
+    - --verb
+    - create,update,patch,get,delete,list,watch
+    - --resource
+    - statefulsets/scale
+    cmd: kubectl
+    when: $serviceAccountName
+  - args:
+    - delete
+    - --namespace
+    - $namespace
+    - --wait
+    - --timeout
+    - $timeout
+    - --ignore-not-found
+    - rolebinding
+    - sas-prepare-for-update-sas-consul-server
+    cmd: kubectl
+    when: $serviceAccountName
+  - args:
+    - create
+    - --namespace
+    - $namespace
+    - rolebinding
+    - sas-prepare-for-update-sas-consul-server
+    - --role
+    - sas-prepare-for-update-sas-consul-server
+    - --serviceaccount
+    - (print $namespace ":" $serviceAccountName)
+    cmd: kubectl
+    when: $serviceAccountName
+  - args:
+    - scale
+    - --namespace
+    - $namespace
+    - --timeout
+    - $timeout
+    - statefulset
+    - sas-consul-server
+    - --replicas
+    - "0"
+    cmd: kubectl
+  - always: true
+    args:
+    - delete
+    - --namespace
+    - $namespace
+    - --ignore-not-found
+    - rolebinding
+    - sas-prepare-for-update-sas-consul-server
+    cmd: kubectl
+    when: $serviceAccountName
+  - always: true
+    args:
+    - delete
+    - --namespace
+    - $namespace
+    - --ignore-not-found
+    - role
+    - sas-prepare-for-update-sas-consul-server
+    cmd: kubectl
+    when: $serviceAccountName

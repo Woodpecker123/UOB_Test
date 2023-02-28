@@ -1,0 +1,31 @@
+# WARNING: Do not attempt to use this kustomization file in your deployment.
+# WARNING: Kustomize Component support in CAS is being evaluated for a future release of SAS Viya.
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: sas-cas-permstore
+  labels:
+    sas.com/backup-role: provider
+    sas.com/cas-pvc: permstore
+    app.kubernetes.io/part-of: cas
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Mi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: sas-cas-data
+  labels:
+    sas.com/backup-role: provider
+    sas.com/cas-pvc: data
+    app.kubernetes.io/part-of: cas
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 8Gi

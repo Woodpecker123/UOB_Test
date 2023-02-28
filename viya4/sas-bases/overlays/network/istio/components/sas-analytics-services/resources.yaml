@@ -1,0 +1,82 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-analytics-gateway
+spec:
+  host: sas-analytics-gateway
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /analyticsGateway/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: sas-analytics-pipelines
+spec:
+  host: sas-analytics-pipelines
+  trafficPolicy:
+    loadBalancer:
+      consistentHash:
+        httpCookie:
+          name: sas-ingress-istio
+          path: /analyticsPipelines/
+          ttl: 0s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-services
+    sas.com/admin: namespace
+  name: sas-analytics-gateway
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /analyticsGateway
+    - uri:
+        prefix: /analyticsGateway/
+    route:
+    - destination:
+        host: sas-analytics-gateway
+    timeout: 300s
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-analytics-services
+    sas.com/admin: namespace
+  name: sas-analytics-pipelines
+spec:
+  gateways:
+  - public-gateway
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        exact: /analyticsPipelines
+    - uri:
+        prefix: /analyticsPipelines/
+    route:
+    - destination:
+        host: sas-analytics-pipelines
+    timeout: 300s
+

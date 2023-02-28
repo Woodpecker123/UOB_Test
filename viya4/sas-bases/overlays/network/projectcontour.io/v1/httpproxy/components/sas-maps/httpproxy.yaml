@@ -1,0 +1,34 @@
+---
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  annotations:
+    sas.com/kustomize-base: base
+  labels:
+    app.kubernetes.io/name: sas-maps
+    sas.com/admin: namespace
+  name: sas-maps
+spec:
+  routes:
+  - conditions:
+    - prefix: /maps
+    loadBalancerPolicy:
+      strategy: Cookie
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /maps/
+    services:
+    - name: sas-maps
+      port: 80
+    timeoutPolicy:
+      response: 300s
+  - conditions:
+    - prefix: /maps/
+    loadBalancerPolicy:
+      strategy: Cookie
+    services:
+    - name: sas-maps
+      port: 80
+    timeoutPolicy:
+      response: 300s
+

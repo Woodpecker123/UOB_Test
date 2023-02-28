@@ -1,0 +1,24 @@
+apiVersion: orchestration.sas.com/v2beta4
+kind: LifecycleOperation
+metadata:
+  annotations:
+    sas.com/component-name: sas-rabbitmq-server
+    sas.com/component-version: 3.1009001.4-20221216.1671199842998
+  creationTimestamp: null
+  name: deploy-pre-rabbitmq-execute
+spec:
+  args:
+  - name: namespace
+  - name: timeout
+  steps:
+  - args:
+    - delete
+    - --namespace
+    - $namespace
+    - --wait
+    - --timeout
+    - $timeout
+    - --ignore-not-found
+    - service
+    - sas-rabbitmq-server
+    cmd: kubectl
